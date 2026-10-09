@@ -639,42 +639,107 @@ with aba_financeira:
                     "Seguro",
             }
         )
+        .reset_index(
+            drop=True
+        )
     )
 
 
+    tabela_financeira_exibicao = (
+        tabela_financeira.copy()
+    )
+
+
+    tabela_financeira_exibicao[
+        "Processos"
+    ] = (
+        tabela_financeira_exibicao[
+            "Processos"
+        ]
+        .map(
+            inteiro_br
+        )
+    )
+
+
+    colunas_financeiras = [
+        "Valor registrado",
+        "Diárias",
+        "Passagens",
+        "Restituições",
+        "Seguro",
+    ]
+
+
+    for coluna in colunas_financeiras:
+
+        tabela_financeira_exibicao[
+            coluna
+        ] = (
+            tabela_financeira_exibicao[
+                coluna
+            ]
+            .map(
+                lambda valor:
+                    moeda_br(
+                        valor,
+                        compacto=False,
+                    )
+            )
+        )
+
+
     st.dataframe(
-        tabela_financeira,
+        tabela_financeira_exibicao,
         width="stretch",
         hide_index=True,
         column_config={
+            "Código":
+                st.column_config.TextColumn(
+                    "Código",
+                    width="small",
+                ),
+
+            "Organização":
+                st.column_config.TextColumn(
+                    "Organização",
+                    width="large",
+                ),
+
             "Processos":
-                st.column_config.NumberColumn(
-                    format="%d",
+                st.column_config.TextColumn(
+                    "Processos",
+                    width="small",
                 ),
 
             "Valor registrado":
-                st.column_config.NumberColumn(
-                    format="R$ %.2f",
+                st.column_config.TextColumn(
+                    "Valor registrado",
+                    width="medium",
                 ),
 
             "Diárias":
-                st.column_config.NumberColumn(
-                    format="R$ %.2f",
+                st.column_config.TextColumn(
+                    "Diárias",
+                    width="medium",
                 ),
 
             "Passagens":
-                st.column_config.NumberColumn(
-                    format="R$ %.2f",
+                st.column_config.TextColumn(
+                    "Passagens",
+                    width="medium",
                 ),
 
             "Restituições":
-                st.column_config.NumberColumn(
-                    format="R$ %.2f",
+                st.column_config.TextColumn(
+                    "Restituições",
+                    width="medium",
                 ),
 
             "Seguro":
-                st.column_config.NumberColumn(
-                    format="R$ %.2f",
+                st.column_config.TextColumn(
+                    "Seguro",
+                    width="medium",
                 ),
         },
     )
@@ -937,19 +1002,16 @@ with st.expander(
     st.markdown(
         """
         **Agrupar por**
-
         Define qual papel organizacional será utilizado
         para analisar os mesmos registros financeiros:
         órgão superior, órgão pagador ou unidade gestora
         pagadora.
 
         **Organização**
-
         Permite restringir os indicadores financeiros a
         uma organização específica da perspectiva escolhida.
 
         **Totais globais**
-
         Quando a opção `Todas as organizações` está ativa,
         os valores totais permanecem iguais entre as
         perspectivas. Isso é esperado, pois são formas
@@ -957,18 +1019,15 @@ with st.expander(
         pagamentos.
 
         **Perspectiva operacional**
-
         Utiliza o órgão solicitante associado ao processo
         de viagem.
 
         **Separação das perspectivas**
-
         Não atribuímos automaticamente ao órgão solicitante
         os valores financeiros registrados por outra
         estrutura organizacional.
 
         **Urgência**
-
         O percentual representa processos classificados
         como urgentes na fonte e não constitui avaliação
         sobre a necessidade ou mérito da viagem.

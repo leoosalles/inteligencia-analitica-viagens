@@ -341,8 +341,8 @@ with c3:
     )
 
 
-c4, c5, c6, c7 = st.columns(
-    4
+c4, c5 = st.columns(
+    2
 )
 
 
@@ -364,6 +364,11 @@ with c5:
             compacto=True,
         ),
     )
+
+
+c6, c7 = st.columns(
+    2
+)
 
 
 with c6:
@@ -510,6 +515,53 @@ tabela_exibicao = (
         "Valor registrado",
         ascending=False,
     )
+    .reset_index(
+        drop=True
+    )
+)
+
+
+tabela_exibicao[
+    "Registros"
+] = (
+    tabela_exibicao[
+        "Registros"
+    ]
+    .map(
+        inteiro_br
+    )
+)
+
+
+tabela_exibicao[
+    "Valor registrado"
+] = (
+    tabela_exibicao[
+        "Valor registrado"
+    ]
+    .map(
+        lambda valor:
+            moeda_br(
+                valor,
+                compacto=False,
+            )
+    )
+)
+
+
+tabela_exibicao[
+    "Participação (%)"
+] = (
+    tabela_exibicao[
+        "Participação (%)"
+    ]
+    .map(
+        lambda valor:
+            percentual_br(
+                valor,
+                casas=2,
+            )
+    )
 )
 
 
@@ -518,19 +570,28 @@ st.dataframe(
     width="stretch",
     hide_index=True,
     column_config={
+        "Categoria":
+            st.column_config.TextColumn(
+                "Categoria",
+                width="medium",
+            ),
+
         "Registros":
-            st.column_config.NumberColumn(
-                format="%d",
+            st.column_config.TextColumn(
+                "Registros",
+                width="small",
             ),
 
         "Valor registrado":
-            st.column_config.NumberColumn(
-                format="R$ %.2f",
+            st.column_config.TextColumn(
+                "Valor registrado",
+                width="medium",
             ),
 
         "Participação (%)":
-            st.column_config.NumberColumn(
-                format="%.2f%%",
+            st.column_config.TextColumn(
+                "Participação (%)",
+                width="small",
             ),
     },
 )
@@ -594,29 +655,24 @@ with st.expander(
     st.markdown(
         """
         **Valor registrado**
-
         Corresponde à soma de `FatoPagamento.valor`
         nas categorias selecionadas.
 
         **Diárias e passagens**
-
         São classificações existentes na fonte
         `Pagamento` e constituem as referências
         financeiras principais dessas categorias.
 
         **Restituições**
-
         Não devem ser confundidas com o campo
         `Valor devolução` existente na fonte `Viagem`.
 
         **Seguro**
-
         Representa os registros classificados como
         serviço correlato de seguro. Não corresponde
         automaticamente a `Valor outros gastos`.
 
         **Perspectiva organizacional**
-
         Órgão superior, órgão pagador e unidade gestora
         pagadora são analisados separadamente, evitando
         atribuir valores a estruturas organizacionais
