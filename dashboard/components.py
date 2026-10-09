@@ -6,10 +6,12 @@ from dashboard.config import (
 )
 
 
+# ============================================================
 # ESTILO GLOBAL
+# ============================================================
 
 def aplicar_estilo_global():
-    st.markdown(
+    st.html(
         """
         <style>
 
@@ -17,21 +19,22 @@ def aplicar_estilo_global():
            ÁREA PRINCIPAL
         =================================================== */
 
-        .block-container {
+        /*
+        O Streamlit mantém um cabeçalho superior com cerca
+        de 60 px. O padding superior abaixo impede que o
+        primeiro elemento da página fique sob esse cabeçalho.
+        */
+
+        [data-testid="stMainBlockContainer"] {
             max-width: 1500px;
-            padding-top: 1.5rem;
+            padding-top: 5rem !important;
             padding-bottom: 3rem;
         }
 
 
         /* ===================================================
-           TÍTULOS
+           TÍTULOS DE SEÇÃO
         =================================================== */
-
-        h1 {
-            font-weight: 750 !important;
-            letter-spacing: -0.02em;
-        }
 
         h2,
         h3 {
@@ -44,11 +47,16 @@ def aplicar_estilo_global():
         =================================================== */
 
         .pi-subtitle {
+            display: block;
             opacity: 0.72;
-            margin-top: -0.6rem;
+
+            margin-top: -0.35rem;
             margin-bottom: 1.6rem;
+
             font-size: 1rem;
             line-height: 1.55;
+
+            overflow: visible;
         }
 
 
@@ -145,11 +153,15 @@ def aplicar_estilo_global():
 
         .pi-note {
             padding: 0.95rem 1.1rem;
+
             border-left: 4px solid #1F5AA6;
-            background: rgba(31, 90, 166, 0.065);
             border-radius: 7px;
+
+            background: rgba(31, 90, 166, 0.065);
+
             font-size: 0.93rem;
             line-height: 1.6;
+
             margin-top: 0.5rem;
             margin-bottom: 1rem;
         }
@@ -172,7 +184,8 @@ def aplicar_estilo_global():
 
         @media (max-width: 900px) {
 
-            .block-container {
+            [data-testid="stMainBlockContainer"] {
+                padding-top: 4.5rem !important;
                 padding-left: 1rem;
                 padding-right: 1rem;
             }
@@ -183,45 +196,58 @@ def aplicar_estilo_global():
         }
 
         </style>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
+# ============================================================
 # CABEÇALHO
+# ============================================================
 
 def cabecalho_pagina(
     titulo=None,
     subtitulo=None,
 ):
-    st.title(
-        titulo or APP_TITLE
+    titulo_exibicao = (
+        titulo
+        or APP_TITLE
     )
 
-    st.markdown(
+    subtitulo_exibicao = (
+        subtitulo
+        or APP_SUBTITLE
+    )
+
+    st.title(
+        titulo_exibicao
+    )
+
+    st.html(
         (
             '<div class="pi-subtitle">'
-            f'{subtitulo or APP_SUBTITLE}'
+            f'{subtitulo_exibicao}'
             '</div>'
-        ),
-        unsafe_allow_html=True,
+        )
     )
 
 
+# ============================================================
 # NOTA METODOLÓGICA
+# ============================================================
 
 def nota_metodologica(texto):
-    st.markdown(
+    st.html(
         (
             '<div class="pi-note">'
             f'{texto.strip()}'
             '</div>'
-        ),
-        unsafe_allow_html=True,
+        )
     )
 
 
+# ============================================================
 # TÍTULO DE SEÇÃO
+# ============================================================
 
 def titulo_secao(
     titulo,
@@ -237,14 +263,15 @@ def titulo_secao(
         )
 
 
+# ============================================================
 # RODAPÉ PADRONIZADO
+# ============================================================
 
 def rodape_pagina(texto):
-    st.markdown(
+    st.html(
         (
             '<div class="pi-footer">'
             f'{texto}'
             '</div>'
-        ),
-        unsafe_allow_html=True,
+        )
     )
