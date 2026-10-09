@@ -6,6 +6,12 @@ A solução implementa um pipeline analítico em camadas, utilizando **Python, D
 
 O projeto foi desenvolvido em contexto acadêmico com participação da empresa parceira **DATABURGO BRASIL TECNOLOGIA LTDA.** Os dados utilizados na solução são públicos e não correspondem a dados internos ou confidenciais da empresa parceira.
 
+## Acesso ao projeto
+
+- **Dashboard interativo:** [inteligencia-viagens.streamlit.app](https://inteligencia-viagens.streamlit.app)
+- **Código-fonte:** [github.com/leoosalles/inteligencia-analitica-viagens](https://github.com/leoosalles/inteligencia-analitica-viagens)
+
+
 ---
 
 ## Visão geral
@@ -411,7 +417,7 @@ Documenta:
 ### 1. Clone o repositório
 
 ```powershell
-git clone <URL-DO-REPOSITORIO>
+git clone https://github.com/leoosalles/inteligencia-analitica-viagens.git
 cd inteligencia-analitica-viagens
 ```
 
